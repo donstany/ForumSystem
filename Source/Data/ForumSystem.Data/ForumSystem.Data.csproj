@@ -58,9 +58,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
+    <Compile Include="Migrations\201610251424076_InitialCreate.cs" />
+    <Compile Include="Migrations\201610251424076_InitialCreate.Designer.cs">
+      <DependentUpon>201610251424076_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ForumSystem.Data.Common\ForumSystem.Data.Common.csproj">
+      <Project>{6f886608-79e1-4bfc-b16f-3aa37088d44e}</Project>
+      <Name>ForumSystem.Data.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ForumSystem.Data.Models\ForumSystem.Data.Models.csproj">
       <Project>{24fe7519-cf6a-46f5-969b-83e5b759ca0c}</Project>
       <Name>ForumSystem.Data.Models</Name>
@@ -69,6 +78,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201610251424076_InitialCreate.resx">
+      <DependentUpon>201610251424076_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
