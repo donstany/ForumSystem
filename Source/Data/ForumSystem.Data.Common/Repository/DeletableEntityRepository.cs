@@ -16,7 +16,7 @@
 
     public override IQueryable<T> All()
     {
-      // all not delited records
+      // all not deleted records
       return base.All().Where(x => !x.IsDeleted);
     }
 
