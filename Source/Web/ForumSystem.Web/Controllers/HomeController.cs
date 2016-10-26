@@ -13,11 +13,12 @@ namespace ForumSystem.Web.Controllers
   {
     private IRepository<Post> posts;
 
-    // Poor man's DI, MVC search empty ctor and call it
-    public HomeController()
-      : this(new GenericRepository<Post>(new ApplicationDbContext()))
-    {
-    }
+    //// Poor man's DI, MVC search empty ctor and call it -> working without dependency container
+    //public HomeController()
+    //  : this(new GenericRepository<Post>(new ApplicationDbContext()))
+    //{
+    //}
+
     // this ctor is for Unit test
     public HomeController(IRepository<Post> posts)
     {
