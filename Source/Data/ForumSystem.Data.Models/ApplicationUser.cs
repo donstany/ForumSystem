@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ForumSystem.Data.Models
 {// implement this interface to use from EF, data will automatically filled from Framework
@@ -19,6 +20,7 @@ namespace ForumSystem.Data.Models
 
     public DateTime? DeletedOn { get; set; }
 
+    [Index]
     public bool IsDeleted { get; set; }
 
     public DateTime? ModifiedOn { get; set; }
