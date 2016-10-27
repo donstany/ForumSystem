@@ -1,14 +1,11 @@
 ﻿namespace ForumSystem.Data.Common.Repository
 {
-  using ForumSystem.Data.Common.Repository;
-  using System;
-  using System.ComponentModel.DataAnnotations;
-  using System.Data.Entity;
-  using System.Data.Entity.Infrastructure;
-  using System.Linq;
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Linq;
 
-  // This is Memory repostory for Unit Testing
-  public class GenericRepository<T> : IRepository<T> where T : class
+    public class GenericRepository<T> : IRepository<T> where T : class
     {
         public GenericRepository(DbContext context)
         {

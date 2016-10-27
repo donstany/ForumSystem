@@ -1,79 +1,61 @@
-﻿using ForumSystem.Data.Common.Models;
-using ForumSystem.Data.Migrations;
-using ForumSystem.Data.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Data.Entity;
-using System.Linq;
-
-namespace ForumSystem.Data
+﻿namespace ForumSystem.Data
 {
-  public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-  {
-    public ApplicationDbContext()
-        : base("DefaultConnection", throwIfV1Schema: false)
+    using System;
+    using System.Data.Entity;
+    using System.Linq;
+
+    using ForumSystem.Data.Common.Models;
+    using ForumSystem.Data.Migrations;
+    using ForumSystem.Data.Models;
+
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-      Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
-    }
-
-    public static ApplicationDbContext Create()
-    {
-      return new ApplicationDbContext();
-    }
-    public IDbSet<Tag> Tags { get; set; }
-
-    public IDbSet<Post> Posts { get; set; }
-
-
-    public override int SaveChanges()
-    {
-      this.ApplyAuditInfoRules();
-      this.ApplyDeletableEntityRules();
-      return base.SaveChanges();
-    }
-
-
-    private void ApplyAuditInfoRules()
-    {
-      // Approach via @julielerman: http://bit.ly/123661P
-      //ChangeTracker - all object extracted from Db and want to save changes
-      foreach (var entry in
-          this.ChangeTracker.Entries()
-              .Where(
-                  e =>
-                  e.Entity is IAuditInfo && ((e.State == EntityState.Added) || (e.State == EntityState.Modified))))
-      {
-        var entity = (IAuditInfo)entry.Entity;
-
-        if (entry.State == EntityState.Added)
+        public ApplicationDbContext()
+            : base("DefaultConnection", throwIfV1Schema: false)
         {
-          // 
-          if (!entity.PreserveCreatedOn)
-          {
-            entity.CreatedOn = DateTime.Now;
-          }
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
         }
-        else
+
+        public IDbSet<Tag> Tags { get; set; }
+
+        public IDbSet<Post> Posts { get; set; }
+
+        public static ApplicationDbContext Create()
         {
-          entity.ModifiedOn = DateTime.Now;
+            return new ApplicationDbContext();
         }
-      }
-    }
 
-    private void ApplyDeletableEntityRules()
-    {
-      // Approach via @julielerman: http://bit.ly/123661P
-      foreach (
-          var entry in
-              this.ChangeTracker.Entries()
-                  .Where(e => e.Entity is IDeletableEntity && (e.State == EntityState.Deleted)))
-      {
-        var entity = (IDeletableEntity)entry.Entity;
+        public override int SaveChanges()
+        {
+            this.ApplyAuditInfoRules();
+            return base.SaveChanges();
+        }
 
-        entity.DeletedOn = DateTime.Now;
-        entity.IsDeleted = true;
-        entry.State = EntityState.Modified;
-      }
+        private void ApplyAuditInfoRules()
+        {
+            // Approach via @julielerman: http://bit.ly/123661P
+            foreach (var entry in
+                this.ChangeTracker.Entries()
+                    .Where(
+                        e =>
+                        e.Entity is IAuditInfo && ((e.State == EntityState.Added) || (e.State == EntityState.Modified))))
+            {
+                var entity = (IAuditInfo)entry.Entity;
+
+                if (entry.State == EntityState.Added)
+                {
+                    if (!entity.PreserveCreatedOn)
+                    {
+                        entity.CreatedOn = DateTime.Now;
+                    }
+                }
+                else
+                {
+                    entity.ModifiedOn = DateTime.Now;
+                }
+            }
+        }
     }
-  }
 }

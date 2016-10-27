@@ -1,9 +1,8 @@
-# ForumSystem
-===============
+ForumSystem
+===========
 
-Sample forum system based on ASP Net MVC - like StackOverflow
+Sample forums system like stackoverflow
 
 TODO
-======
+===========
 
-* Auto mapper

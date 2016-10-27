@@ -1,34 +1,27 @@
-﻿using ForumSystem.Data.Common.Repository;
-using ForumSystem.Data.Models;
-using ForumSystem.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace ForumSystem.Web.Controllers
+﻿namespace ForumSystem.Web.Controllers
 {
-  public class HomeController : Controller
-  {
-    private IRepository<Post> posts;
+    using System.Web.Mvc;
 
-    //// Poor man's DI, MVC search empty ctor and call it -> working without dependency container
-    //public HomeController()
-    //  : this(new GenericRepository<Post>(new ApplicationDbContext()))
-    //{
-    //}
+    using AutoMapper.QueryableExtensions;
 
-    // this ctor is for Unit test
-    public HomeController(IRepository<Post> posts)
+    using ForumSystem.Data.Common.Repository;
+    using ForumSystem.Data.Models;
+    using ForumSystem.Web.ViewModels.Home;
+
+    public class HomeController : Controller
     {
-      this.posts = posts;
-    }
-    public ActionResult Index()
-    {
-      var posts = this.posts.All();
-      return View(posts);
-    }
+        private readonly IDeletableEntityRepository<Post> posts;
 
-  }
+        public HomeController(IDeletableEntityRepository<Post> posts)
+        {
+            this.posts = posts;
+        }
+
+        public ActionResult Index()
+        {
+            var model = this.posts.All().Project().To<IndexBlogPostViewModel>();
+
+            return this.View(model);
+        }
+    }
 }
